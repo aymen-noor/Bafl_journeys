@@ -1,0 +1,88 @@
+# #------------------------------------------------------------Debit Card--------------------------------------------------------------
+# # debit_menu
+# - debit_card_menu
+# # Option 1 of debit menu
+# - debit_cards_conventional_banking
+# # Options of debit card conventional banking
+# - conventional_banking_bafl_visa_foreign_currency_debit_card
+# - conventional_banking_bafl_visa_classic_debit_card
+# - conventional_banking_bafl_visa_signature_debit_card
+# - conventional_banking_bafl_visa_platinum_debit_card
+# - conventional_banking_bafl_visa_gold_debit_card
+# - conventional_banking_bafl_visa_pehchaan_debit_card
+# - conventional_banking_bafl_paypak_classic_debit_card
+# # Fixed options for each of conventional banking option
+# # - Apply for Card
+# # - Features & Benefits
+# # - Limit and Annual Charges
+# # - Talk to AI Assistant
+# # Option 2 of debit menu
+# - debit_cards_islamic_banking_
+# #Options of debit card islamic banking
+# - bafl_paypak_islamic_classic_debit_card
+# - bafl_visa_islamic_signature_card
+# - bafl_islamic_power_pack_women_debit_card
+# - bafl_islamic_gold_women_debit_card
+# - bafl_visa_islamic_foreign_currency_debit_card
+# - bafl_islamic_power_pack_signature_debit_card
+# - bafl_visa_islamic_classic_debit_card
+# # Fixed options for each of islamic banking option
+# # - Talk to AI Assistant
+# # - Benefits & Features
+# # - Limit & Annual Charges
+# - apply_for_card
+# - features_benefits
+# - limit_charges
+# - talk_to_ai
+
+
+version: "3.1"
+
+rules:
+- rule: Start Debit Card Flow
+  steps:
+    - intent: debit_card_menu
+    - action: action_ask_main_menu
+    - slot_was_set:
+        - menu_path: "debit_card_menu"  
+
+# Conventional Banking Path
+- rule: Handle Conventional Banking
+  condition:
+    - slot_was_set:
+        - menu_path: "debit_card_menu"
+  steps:
+    - intent: debit_cards_conventional_banking
+    - action: conventional_card_form  
+    - active_loop: conventional_card_form  
+
+- rule: Deactivate Conventional Card Form
+  condition:
+    - active_loop: conventional_card_form  
+  steps:
+     - action: conventional_card_form  
+     - active_loop: null
+     - action: action_show_json_response
+
+# Islamic Banking Path
+- rule: Handle Islamic Banking
+  condition:
+    - slot_was_set:
+        - menu_path: "debit_card_menu"
+  steps:
+    - intent: debit_cards_islamic_banking
+    - action: islamic_card_form 
+    - active_loop: islamic_card_form  
+
+- rule: Deactivate Islamic Card Form
+  condition:
+    - active_loop: islamic_card_form  
+  steps:
+      - action: islamic_card_form  
+      - active_loop: null
+      - action: action_show_json_response
+
+- rule: Reset slots 
+  steps:
+    - intent: reset_slots
+    - action: action_reset_slots

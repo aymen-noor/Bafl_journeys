@@ -1,0 +1,126 @@
+# version: "3.1"
+
+# intents:
+# #------------------------------------------------------------Debit Card--------------------------------------------------------------
+#   # debit_menu
+#   - debit_card_menu
+#   # Option 1 of debit menu
+#   - debit_cards_conventional_banking
+#   # Options of debit card conventional banking
+#   - conventional_banking_bafl_visa_foreign_currency_debit_card
+#   - conventional_banking_bafl_visa_classic_debit_card
+#   - conventional_banking_bafl_visa_signature_debit_card
+#   - conventional_banking_bafl_visa_platinum_debit_card
+#   - conventional_banking_bafl_visa_gold_debit_card
+#   - conventional_banking_bafl_visa_pehchaan_debit_card
+#   - conventional_banking_bafl_paypak_classic_debit_card
+# # Fixed options for each of conventional banking option
+#   # - Apply for Card
+#   # - Features & Benefits
+#   # - Limit and Annual Charges
+#   # - Talk to AI Assistant
+  
+#   # Option 2 of debit menu
+#   - debit_cards_islamic_banking_
+# #Options of debit card islamic banking
+#   - bafl_paypak_islamic_classic_debit_card
+#   - bafl_visa_islamic_signature_card
+#   - bafl_islamic_power_pack_women_debit_card
+#   - bafl_islamic_gold_women_debit_card
+#   - bafl_visa_islamic_foreign_currency_debit_card
+#   - bafl_islamic_power_pack_signature_debit_card
+#   - bafl_visa_islamic_classic_debit_card
+# # Fixed options for each of islamic banking option
+#   # - Talk to AI Assistant
+#   # - Benefits & Features
+#   # - Limit & Annual Charges
+#   - apply_for_card
+#   - features_benefits
+#   - limit_charges
+#   - talk_to_ai
+
+
+version: "3.1"
+
+slots:
+  menu_path:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+
+  conventional_card_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: conventional_card_type
+
+  conventional_card_action:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: conventional_card_action
+  
+  islamic_card_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: islamic_card_type
+
+  islamic_card_action:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: islamic_card_action
+  
+  banking_type:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: banking_type
+
+forms:
+  conventional_card_form:
+    required_slots:
+      - conventional_card_type
+      - conventional_card_action
+
+  islamic_card_form:
+    required_slots:
+      - islamic_card_type
+      - islamic_card_action
+
+actions:
+  - validate_conventional_card_form
+  - validate_islamic_card_form
+  - action_show_json_response
+  - action_ask_main_menu
+  - action_ask_conventional_card_type
+  - action_ask_conventional_card_action
+  - action_ask_islamic_card_type
+  - action_ask_islamic_card_action
+  - action_reset_slots
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+intents:
+  - debit_card_menu
+  - debit_cards_conventional_banking
+  - debit_cards_islamic_banking
+  - conventional_card_selected
+  - islamic_card_selected
+
+entities:
+  - menu_path
+  - conventional_card_type
+  - conventional_card_action
+  - islamic_card_type
+  - islamic_card_action
+  - banking_type
