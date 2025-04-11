@@ -106,138 +106,23 @@
 # # - Talk to AI Assistant
 ## -----------------------------------------------------------------
 
-# version: "3.1"
-
-# rules:
-# - rule: Start Debit Card Flow
-#   steps:
-#     - intent: debit_card_menu
-#     - action: action_ask_main_menu
-#     - slot_was_set:
-#       - menu_path: "debit_card_menu"
-
-# - rule: Handle Conventional Banking
+# # Islamic Banking Path
+# - rule: Handle Islamic Banking
 #   condition:
 #     - slot_was_set:
 #         - menu_path: "debit_card_menu"
 #   steps:
-#     - action: action_ask_conventional_card_type
-#     - intent: conventional_card_type
-#     - action: action_set_conventional_card_type
+#     - intent: debit_cards_islamic_banking
+#     - action: islamic_card_form 
+#     - active_loop: islamic_card_form  
 
-# - rule: Handle Conventional Card Action
+# - rule: Deactivate Islamic Card Form
 #   condition:
-#     - slot_was_set: 
-#         - conventional_card_type: true
+#     - active_loop: islamic_card_form  
 #   steps:
-#     - action: action_ask_conventional_card_action
-#     - intent : conventional_card_action
-#     - action: action_set_conventional_card_action
-
-# - rule: Perform Json Action
-#   condition:
-#     - slot_was_set:
-#         - conventional_card_action: true
-#   steps:
-#     - action: action_show_json_response
-
-# rules:
-# - rule: Start Debit Card Flow
-#   steps:
-#     - intent: debit_card_menu
-#     - action: action_ask_main_menu
-#     - slot_was_set:
-#       - menu_path: "debit_card_menu"
-
-# - rule: Handle Conventional Banking
-#   condition:
-#     - slot_was_set:
-#       - menu_path: "debit_card_menu"
-#   steps:
-#     - intent: conventional_banking
-#     - action: action_ask_conventional_card_type
-
-# - rule: Handle Conventional Card Type
-#   condition:
-#     - slot_was_set:
-#       - menu_path: "debit_card_menu"
-#   steps:
-#     - intent: conventional_card_type
-#     - action: action_set_conventional_card_type
-
-# - rule: Handle Conventional Card Action
-#   condition:
-#     - slot_was_set: 
-#       - conventional_card_type: true
-#   steps:
-#     - action: action_ask_conventional_card_action
-#     - intent: conventional_card_action
-#     - action: action_set_conventional_card_action
-
-# - rule: Perform Json Action
-#   condition:
-#     - slot_was_set:
-#       - conventional_card_action: true
-#   steps:
-#     - action: action_show_json_response
-
-# - rule: Conventional Banking Flow
-#   condition:
-#     - slot_was_set:
-#       - menu_path: "debit_card_menu"
-#   steps:
-#     - intent: debit_cards_conventional_banking
-#     - action: action_ask_conventional_card_type
-#     - slot_was_set:
-#       - banking_type: "conventional"
-
-# - rule: Handle Card Type Selection
-#   condition:
-#     - slot_was_set:
-#       - banking_type: "conventional"
-#   steps:
-#     - intent: conventional_card_type
-#     - action: action_set_conventional_card_type
-#     - action: action_ask_conventional_card_action
-
-# - rule: Handle Conventional Card Action
-#   condition:
-#     - slot_was_set:
-#       - conventional_card_type: true
-#   steps:
-#     - intent: conventional_card_action
-#     - action: action_set_conventional_card_action
-#     - action: action_show_json_response
-# - rule: Repeat Card Action
-#   condition:
-#     - slot_was_set:
-#         - conventional_card_action: null
-#   steps:
-#     - action: action_ask_conventional_card_action
-#     - intent: conventional_card_action
-#     - action: action_set_conventional_card_action
-#     - action: action_show_json_response
-
-
-
-
-# Islamic Banking Path
-- rule: Handle Islamic Banking
-  condition:
-    - slot_was_set:
-        - menu_path: "debit_card_menu"
-  steps:
-    - intent: debit_cards_islamic_banking
-    - action: islamic_card_form 
-    - active_loop: islamic_card_form  
-
-- rule: Deactivate Islamic Card Form
-  condition:
-    - active_loop: islamic_card_form  
-  steps:
-      - action: islamic_card_form  
-      - active_loop: null
-      - action: action_show_json_response
+#       - action: islamic_card_form  
+#       - active_loop: null
+#       - action: action_show_json_response
 
 
 
@@ -247,23 +132,28 @@
 #   - intent: credit_card_menu
 #   - action: 
 
-
-
 # #***********************************************Reset Slots*************************************************************************
 - rule: Reset slots 
   steps:
     - intent: reset_slots
     - action: action_reset_slots
-#**********************************************************************************************************************************
+#****************************************************Debit card flow************************************************************
+- rule: Start Debit Card Flow
+  steps:
+    - intent: debit_card_menu
+    - action: action_ask_main_menu
+    - slot_was_set:
+        - menu_path: "debit_card_menu"  
+#*******************************************Conventional Banking***************************************************************************************
 
-- rule: Handle Banking Selection
+- rule: Handle conventional Banking Selection
   steps:
     - intent: conventional_banking
     - slot_was_set:
       - banking_type: "conventional"
     - action: action_ask_conventional_card_type
 
-- rule: Handle Card Type
+- rule: Handle conventional Card Type
   condition:
     - slot_was_set:
       - banking_type: "conventional"
@@ -281,4 +171,30 @@
   - intent: conventional_card_action
   - action: action_set_conventional_card_action
   - action: action_show_json_response
-  - action: action_reset_slots
+
+#************************************************Islamic Banking************************************************************
+- rule: Handle islamic Banking Selection
+  steps:
+    - intent: islamic_banking
+    - slot_was_set:
+      - banking_type: "islamic"
+    - action: action_ask_islamic_card_type
+
+- rule: Handle islamic Card Type
+  condition:
+    - slot_was_set:
+      - banking_type: "islamic"
+  steps:
+    - intent: islamic_card_type
+    - action: action_set_islamic_card_type
+    - action: action_ask_islamic_card_action
+
+
+- rule: Handle Islamic Card Flow
+  condition:
+    - slot_was_set:
+      - islamic_card_type: true
+  steps:
+  - intent: islamic_card_action
+  - action: action_set_islamic_card_action
+  - action: action_show_json_response

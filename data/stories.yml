@@ -22,3 +22,21 @@ stories:
     - conventional_card_action: "apply_for_card"
   - action: action_set_conventional_card_action
   - action: action_show_json_response
+
+
+- story: Islamic Card Flow
+  steps:
+  - intent: debit_card_menu
+  - action: action_ask_main_menu
+  - intent: islamic_banking
+  - action: action_ask_islamic_card_type
+  - intent: islamic_card_type
+    entities:
+    - islamic_card_type: "bafl_visa_islamic_foreign_currency_debit_card"
+  - action: action_set_islamic_card_type
+  - action: action_ask_islamic_card_action
+  - intent: islamic_card_action
+    entities:
+    - islamic_card_action: "apply_for_card"
+  - action: action_set_islamic_card_action
+  - action: action_show_json_response

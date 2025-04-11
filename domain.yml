@@ -85,11 +85,11 @@ slots:
         entity: banking_type
     
 
-forms:
-  islamic_card_form:
-    required_slots:
-      - islamic_card_type
-      - islamic_card_action
+# forms:
+#   islamic_card_form:
+#     required_slots:
+#       - islamic_card_type
+#       - islamic_card_action
       
 #   conventional_card_form:
 #     required_slots:
@@ -98,8 +98,6 @@ forms:
 
 
 actions:
-  - validate_conventional_card_form
-  - validate_islamic_card_form
   - action_show_json_response
   - action_ask_main_menu
   - action_ask_conventional_card_type
@@ -110,6 +108,8 @@ actions:
   - action_set_conventional_card_type
   - action_set_conventional_card_action
   - action_set_banking_type
+  - action_set_islamic_card_type  
+  - action_set_islamic_card_action  
 
 
 intents:
@@ -117,7 +117,6 @@ intents:
   - debit_card_menu
   - islamic_banking
   - conventional_banking
-  - islamic_card_selected
   - conventional_card_type
   - conventional_card_action
   - islamic_card_type 

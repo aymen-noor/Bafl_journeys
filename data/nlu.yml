@@ -13,11 +13,7 @@ nlu:
   examples: |
     - islamic_banking
 
-- intent: islamic_card_type
-  examples: |
-    - bafl_paypak_islamic_classic_debit_card
-    - bafl_visa_islamic_signature_card
-    - bafl_islamic_power_pack_women_debit_card
+
 
 - intent: reset_slots
   examples: |
@@ -37,8 +33,22 @@ nlu:
     - conventional_banking_bafl_visa_foreign_currency_debit_card
     - conventional_banking_bafl_visa_classic_debit_card
 
+- intent: islamic_card_type
+  examples: |
+    - bafl_paypak_islamic_classic_debit_card
+    - bafl_visa_islamic_signature_card
+    - bafl_islamic_power_pack_women_debit_card
+
 - intent: conventional_card_action
   examples: |
     - apply_for_card
     - features_&_benefits
     - limits_&_charges
+    - talk_to_ai
+
+- intent: islamic_card_action
+  examples: |
+    - features_&_benefits
+    - limits_&_charges
+    - talk_to_ai
+
