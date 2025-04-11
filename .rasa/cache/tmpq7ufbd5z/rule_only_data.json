@@ -1,0 +1,8 @@
+{
+  "rule_only_slots": [
+    "menu_path"
+  ],
+  "rule_only_loops": [
+    "islamic_card_form"
+  ]
+}

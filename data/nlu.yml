@@ -5,21 +5,15 @@ nlu:
   examples: |
     - debit_card_menu
 
-- intent: debit_cards_conventional_banking
+- intent: conventional_banking
   examples: |
-    - debit_cards_conventional_banking
+    - conventional_banking
 
-- intent: debit_cards_islamic_banking
+- intent: islamic_banking
   examples: |
-    - debit_cards_islamic_banking
+    - islamic_banking
 
-- intent: conventional_card_selected
-  examples: |
-    - conventional_banking_bafl_visa_foreign_currency_debit_card
-    - conventional_banking_bafl_visa_classic_debit_card
-    - conventional_banking_bafl_visa_platinum_debit_card
-
-- intent: islamic_card_selected
+- intent: islamic_card_type
   examples: |
     - bafl_paypak_islamic_classic_debit_card
     - bafl_visa_islamic_signature_card
@@ -30,3 +24,21 @@ nlu:
     - reset slots
     - reset_slots
 
+- intent: inform
+  examples: |
+    - [conventional](banking_type)
+    - [islamic](banking_type)
+    - [apply](conventional_card_action)
+    - [features](conventional_card_action)
+    - [limits](conventional_card_action)
+
+- intent: conventional_card_type
+  examples: |
+    - conventional_banking_bafl_visa_foreign_currency_debit_card
+    - conventional_banking_bafl_visa_classic_debit_card
+
+- intent: conventional_card_action
+  examples: |
+    - apply_for_card
+    - features_&_benefits
+    - limits_&_charges

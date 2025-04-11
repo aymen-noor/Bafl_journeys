@@ -1,0 +1,40 @@
+{
+  "text": {
+    "debit_card_menu": 5,
+    "conventional_banking": 4,
+    "islamic_banking": 7,
+    "bafl_paypak_islamic_classic_debit_card": 1,
+    "bafl_visa_islamic_signature_card": 2,
+    "bafl_islamic_power_pack_women_debit_card": 0,
+    "reset": 8,
+    "slots": 10,
+    "reset_slots": 9,
+    "conventional": 3,
+    "islamic": 6
+  },
+  "intent": {
+    "debit_card_menu": 1,
+    "conventional_banking": 0,
+    "islamic_banking": 3,
+    "islamic_card_type": 4,
+    "reset_slots": 5,
+    "inform": 2
+  },
+  "response": null,
+  "action_name": {
+    "action_listen": 6,
+    "action_restart": 7,
+    "action_session_start": 9,
+    "action_default_fallback": 4,
+    "action_deactivate_loop": 1,
+    "action_revert_fallback_events": 8,
+    "action_default_ask_affirmation": 2,
+    "action_default_ask_rephrase": 3,
+    "action_two_stage_fallback": 10,
+    "action_unlikely_intent": 11,
+    "action_back": 0,
+    "action_extract_slots": 5
+  },
+  "action_text": null,
+  "intent_response_key": null
+}

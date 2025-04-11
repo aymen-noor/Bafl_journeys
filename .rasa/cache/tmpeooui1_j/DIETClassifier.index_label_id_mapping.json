@@ -1,0 +1,8 @@
+{
+  "0": "debit_card_menu",
+  "1": "debit_cards_conventional_banking",
+  "2": "debit_cards_islamic_banking",
+  "3": "inform",
+  "4": "islamic_card_type",
+  "5": "reset_slots"
+}

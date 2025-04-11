@@ -1,0 +1,10 @@
+[
+  {
+    "name": "conventional_card_type",
+    "pattern": "(\\bconventional_banking_bafl_visa_foreign_currency_debit_card\\b|\\bconventional_banking_bafl_visa_classic_debit_card\\b)"
+  },
+  {
+    "name": "conventional_card_action",
+    "pattern": "(\\bApply\\ for\\ Card\\b|\\bFeatures\\ \\&\\ Benefits\\b|\\bLimits\\ \\&\\ Charges\\b)"
+  }
+]

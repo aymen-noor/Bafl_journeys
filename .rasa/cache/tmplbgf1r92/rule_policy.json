@@ -1,0 +1,54 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_conventional_banking\"}}]": "action_ask_conventional_card_type",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_conventional_banking\"}}, {\"prev_action\": {\"action_name\": \"action_ask_conventional_card_type\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_conventional_banking\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}]": "action_set_conventional_card_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_action\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}]": "action_show_json_response",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_action\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}, {\"prev_action\": {\"action_name\": \"action_show_json_response\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_islamic_banking\"}}]": "islamic_card_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_islamic_banking\"}}, {\"active_loop\": {\"name\": \"islamic_card_form\"}, \"prev_action\": {\"action_name\": \"islamic_card_form\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_islamic_banking\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"conventional_card_type\"}}]": "action_set_conventional_card_type",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"conventional_card_type\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_type\"}, \"user\": {\"intent\": \"conventional_card_type\"}}]": "action_ask_conventional_card_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"conventional_card_type\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_type\"}, \"user\": {\"intent\": \"conventional_card_type\"}}, {\"prev_action\": {\"action_name\": \"action_ask_conventional_card_action\"}, \"user\": {\"intent\": \"conventional_card_type\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"reset_slots\"}}]": "action_reset_slots",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"reset_slots\"}}, {\"prev_action\": {\"action_name\": \"action_reset_slots\"}, \"user\": {\"intent\": \"reset_slots\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"debit_card_menu\"}}]": "action_ask_main_menu",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"debit_card_menu\"}}, {\"prev_action\": {\"action_name\": \"action_ask_main_menu\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_card_menu\"}}]": "action_listen",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"islamic_card_form\"}}]": "action_show_json_response",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"islamic_card_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_show_json_response\"}}]": "action_listen"
+    },
+    "rule_only_slots": [
+      "menu_path",
+      "conventional_card_type"
+    ],
+    "rule_only_loops": [
+      "islamic_card_form"
+    ],
+    "rules_for_loop_unhappy_path": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"islamic_card_form\"}, \"prev_action\": {\"action_name\": \"islamic_card_form\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_islamic_banking\"}}]": "do_not_predict_loop_action"
+    },
+    "rules_not_in_stories": [
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"debit_card_menu\"}}, {\"prev_action\": {\"action_name\": \"action_ask_main_menu\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_card_menu\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"conventional_card_type\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_type\"}, \"user\": {\"intent\": \"conventional_card_type\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"debit_card_menu\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"reset_slots\"}}, {\"prev_action\": {\"action_name\": \"action_reset_slots\"}, \"user\": {\"intent\": \"reset_slots\"}}]",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"islamic_card_form\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"conventional_card_type\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_type\"}, \"user\": {\"intent\": \"conventional_card_type\"}}, {\"prev_action\": {\"action_name\": \"action_ask_conventional_card_action\"}, \"user\": {\"intent\": \"conventional_card_type\"}}]",
+      "handling active loops and forms - islamic_card_form",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_action\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}, {\"prev_action\": {\"action_name\": \"action_show_json_response\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}]",
+      "predicting default action with intent back",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_conventional_banking\"}}, {\"prev_action\": {\"action_name\": \"action_ask_conventional_card_type\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_conventional_banking\"}}]",
+      "predicting default action with intent restart",
+      "[{\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"islamic_card_form\"}}, {\"active_loop\": {\"name\": \"should_not_be_set\"}, \"prev_action\": {\"action_name\": \"action_show_json_response\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_conventional_banking\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}, {\"prev_action\": {\"action_name\": \"action_set_conventional_card_action\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"menu_path\": [1.0]}, \"user\": {\"intent\": \"debit_cards_islamic_banking\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"reset_slots\"}}]",
+      "predicting default action with intent session_start",
+      "handling active loops and forms - islamic_card_form - action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"conventional_card_type\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"slots\": {\"conventional_card_type\": [1.0]}, \"user\": {\"intent\": \"conventional_card_action\"}}]"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+version: "3.1"
+stories:
+
+- story: Reset Slots Story
+  steps:
+    - intent: reset_slots
+    - action: action_reset_slots
+
+- story: Conventional Card Flow
+  steps:
+  - intent: debit_card_menu
+  - action: action_ask_main_menu
+  - intent: conventional_banking
+  - action: action_ask_conventional_card_type
+  - intent: conventional_card_type
+    entities:
+    - conventional_card_type: "foreign_currency"
+  - action: action_set_conventional_card_type
+  - action: action_ask_conventional_card_action
+  - intent: conventional_card_action
+    entities:
+    - conventional_card_action: "apply_for_card"
+  - action: action_set_conventional_card_action
+  - action: action_show_json_response

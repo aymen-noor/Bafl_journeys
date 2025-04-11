@@ -37,19 +37,19 @@ import json
 from rasa_sdk.events import SlotSet 
 from actions.form_validation import ValidateBaseForms
 #*********************************************Form Actions*****************************************************************************
-class ValidateConventionalCardForm(ValidateBaseForms):
+# class ValidateConventionalCardForm(ValidateBaseForms):
 
-    def name(self) -> Text:
-        return "validate_conventional_card_form"
-    async def extract_conventional_card_type(self, dispatcher: CollectingDispatcher, tracker: Tracker,
-                                     domain: Dict[Text, Any]) -> Dict[Text, Any]:
-        print("validating card_type")
-        return await self.extract_slot_value(tracker, "conventional_card_type")
+#     def name(self) -> Text:
+#         return "validate_conventional_card_form"
+#     async def extract_conventional_card_type(self, dispatcher: CollectingDispatcher, tracker: Tracker,
+#                                      domain: Dict[Text, Any]) -> Dict[Text, Any]:
+#         print("validating card_type")
+#         return await self.extract_slot_value(tracker, "conventional_card_type")
     
-    async def extract_conventional_card_action(self, dispatcher: CollectingDispatcher, tracker: Tracker,
-                                     domain: Dict[Text, Any]) -> Dict[Text, Any]:
-        print("validating card_action")
-        return await self.extract_slot_value(tracker, "conventional_card_action")
+#     async def extract_conventional_card_action(self, dispatcher: CollectingDispatcher, tracker: Tracker,
+#                                      domain: Dict[Text, Any]) -> Dict[Text, Any]:
+#         print("validating card_action")
+#         return await self.extract_slot_value(tracker, "conventional_card_action")
     
 class ValidateIslamicCardForm(ValidateBaseForms):
 
@@ -72,12 +72,13 @@ class ActionAskMainMenu(Action):
     def name(self) -> Text:
         return "action_ask_main_menu"
 
-    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+    async def run(self, dispatcher, tracker, domain):
+      
         dispatcher.utter_message(
-            text="Debit Card Options:\n1. Conventional Banking\n2. Islamic Banking",
+            text="Debit Card Options:",
             buttons=[
-                {"title": "Conventional Banking", "payload": "/inform{\"banking_type\":\"conventional\"}"},
-                {"title": "Islamic Banking", "payload": "/inform{\"banking_type\":\"islamic\"}"}
+                {"title": "Conventional", "payload": "/conventional_banking"},
+                {"title": "Islamic", "payload": "/islamic_banking"}
             ]
         )
         return []
@@ -87,29 +88,61 @@ class ActionAskConventionalCardType(Action):
         return "action_ask_conventional_card_type"
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
-        print("inside action ask conventional cards")
-        dispatcher.utter_message(
-            text="Conventional Banking Cards:\n - conventional_banking_bafl_visa_foreign_currency_debit_card\n - conventional_banking_bafl_visa_classic_debit_card\n - conventional_banking_bafl_visa_signature_debit_card\n - conventional_banking_bafl_visa_platinum_debit_card\n - conventional_banking_bafl_visa_gold_debit_card\n - conventional_banking_bafl_visa_pehchaan_debit_card\n - conventional_banking_bafl_paypak_classic_debit_card"
-        )
-        banking_type="debit_card/conventional_card"
-        return[SlotSet("banking_type",banking_type)]
+        if not tracker.get_slot("conventional_card_type"):
+            dispatcher.utter_message(
+                text="Conventional Banking Cards:",
+                buttons=[
+                    {
+                        "title": "BAFL Visa Foreign Currency",
+                        "payload": '/conventional_card_type{"conventional_card_type":"foreign_currency"}'
+                    },
+                    {
+                        "title": "BAFL Visa Classic",
+                        "payload": '/conventional_card_type{"conventional_card_type":"classic"}'
+                    }
+                ]
+            )
+        return [SlotSet("banking_type", "conventional")] 
 class ActionAskConventionalCardAction(Action):
     def name(self) -> Text:
         return "action_ask_conventional_card_action"
 
-    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
-        dispatcher.utter_message(
-            text="Options:\n1. Apply for Card\n2. Features & Benefits\n3. Limits & Charges\n4. Talk to AI",
-            buttons=[
-                {"title": "Apply for Card", "payload": "request_apply_card"},
-                {"title": "Features & Benefits", "payload": "request_features_benefits"},
-                {"title": "Limits & Charges", "payload": "request_limits_charges"},
-                {"title": "Talk to AI", "payload": "request_ai_assistant"}
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        # Reset the 'inform' slot by returning SlotSet
+        # reset_inform_slot = SlotSet("inform", None)
+
+        # Check if conventional_card_action is not set
+        if not tracker.get_slot("conventional_card_action"):
+            buttons = [
+                {
+                    "title": "Apply for Card",
+                    "payload": '/conventional_card_action{"conventional_card_action":"apply_for_card"}'
+                },
+                {
+                    "title": "Features & Benefits",
+                    "payload": '/conventional_card_action{"conventional_card_action":"features_&_benefits"}'
+                },
+                {
+                    "title": "Limits & Charges",
+                    "payload": '/conventional_card_action{"conventional_card_action":"limits_&_charges"}'
+                }
             ]
-        )
+            
+            dispatcher.utter_message(
+                text="Please select an action:",
+                buttons=buttons
+            )
+
+        
         return []
    
 class ActionAskIslamicCardType(Action):
+
     def name(self) -> Text:
         return "action_ask_islamic_card_type"
 
@@ -118,23 +151,25 @@ class ActionAskIslamicCardType(Action):
         dispatcher.utter_message(
             text="Islamic Banking Cards:\n - bafl_paypak_islamic_classic_debit_card\n - bafl_visa_islamic_signature_card\n - bafl_islamic_power_pack_women_debit_card\n - bafl_islamic_gold_women_debit_card\n - bafl_visa_islamic_foreign_currency_debit_card\n - bafl_islamic_power_pack_signature_debit_card\n - bafl_visa_islamic_classic_debit_card"
         )
-        banking_type="debit_card/islamic_card"
+        banking_type="islamic_banking"
         return[SlotSet("banking_type",banking_type)]
 
  
-class ActionAskConventionalActionOptions(Action):
+class ActionAskIslamicCardAction(Action):
     def name(self) -> Text:
         return "action_ask_islamic_card_action"
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        
         dispatcher.utter_message(
             text="Options:\n1. Features & Benefits\n2. Limits & Charges\n3. Talk to AI",
             buttons=[
-                {"title": "Features & Benefits", "payload": "request_features_benefits"},
-                {"title": "Limits & Charges", "payload": "request_limits_charges"},
-                {"title": "Talk to AI", "payload": "request_ai_assistant"}
+                {"title": "Features & Benefits", "payload": "features_&_benefits"},
+                {"title": "Limits & Charges", "payload": "limits_charges"},
+                {"title": "Talk to AI", "payload": "ai_assistant"}
             ]
         )
+        
         return []
     
 #*******************************************************************************************************************************
@@ -144,7 +179,7 @@ class ActionShowJsonResponse(Action):
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict) -> list:
         banking_type=tracker.get_slot("banking_type")
-        if banking_type == "debit_card/conventional_card":
+        if banking_type == "conventional_card":
             card_type = tracker.get_slot("conventional_card_type")
             card_action = tracker.get_slot("conventional_card_action")
         else:
@@ -166,3 +201,37 @@ class ActionResetSlots(Action):
     def run(self, dispatcher, tracker, domain):
         dispatcher.utter_message(text="Slots are reset.")
         return [SlotSet(slot, None) for slot in tracker.slots.keys()]
+
+#********************************************SET SLOTS************************************************************************************
+
+
+class ActionSetConventionalCardType(Action):
+    def name(self) -> Text:
+        return "action_set_conventional_card_type"
+
+    async def run(self, dispatcher, tracker, domain):
+        print("hello")
+        # In any action
+        print(f"Current slots: {tracker.slots}")
+        card_type = next(tracker.get_latest_entity_values("conventional_card_type"), None)
+        dispatcher.utter_message(f"DEBUG: Setting card type to {card_type}")  
+        print(card_type+"Hello")
+        return [SlotSet("conventional_card_type", card_type)]
+    
+# class ActionSetBankingType(Action): 
+#     def name(self) -> Text: return "action_set_banking_type"
+
+#     async def run(self, dispatcher, tracker, domain):
+#         return [SlotSet("banking_type", "conventional_banking")]
+    
+class ActionSetConventionalCardAction(Action):
+    def name(self) -> Text:
+        return "action_set_conventional_card_action"
+
+    async def run(self, dispatcher, tracker, domain):
+        card_action = next(tracker.get_latest_entity_values("conventional_card_action"), None)
+        print(card_action)
+        dispatcher.utter_message(f"DEBUG: Set action to {card_action}")
+        return [SlotSet("conventional_card_action", card_action)]
+        
+        

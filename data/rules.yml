@@ -32,37 +32,194 @@
 # # - Limit & Annual Charges
 # - apply_for_card
 # - features_benefits
-# - limit_charges
+# - limit_and_annual_charges
 # - talk_to_ai
 
+#************************************************Debit Card Flow**********************************************************************
+#************************************************Credit Card Flow**********************************************************************
+# # credit card
+# - credit_card_menu
+# # Options of credit cards
+# - bank_alfalah_mastercard_optimus_credit_card
+# - bank_alfalah_visa_platinum_credit_card
+# - bank_alfalah_visa_gold_credit_card
+# - bank_alfalah_visa_classic_credit_card
+# - bank_alfalah_american_express_card
+# - bank_ultra_cashback_card
+# # Fixed options for each of credit card option
+# # - Apply for Card
+# # - Features & Benefits
+# # - Card Limit and Annual Charges
+# # - Talk to AI Assistant
 
-version: "3.1"
+#************************************************Credit Card Flow**********************************************************************
 
-rules:
-- rule: Start Debit Card Flow
-  steps:
-    - intent: debit_card_menu
-    - action: action_ask_main_menu
-    - slot_was_set:
-        - menu_path: "debit_card_menu"  
+#************************************************Form 4 Flow**********************************************************************
 
-# Conventional Banking Path
-- rule: Handle Conventional Banking
-  condition:
-    - slot_was_set:
-        - menu_path: "debit_card_menu"
-  steps:
-    - intent: debit_cards_conventional_banking
-    - action: conventional_card_form  
-    - active_loop: conventional_card_form  
+##Rosahan Digital Account (Form4)
+# - roshan_digital_account_menu
+# # Options of Roshan Digital Account
+# - conventional_rda
+# - islamic_rda
+## Fixed options for each of Roshan Digital Account option
+# # - Roshan Product
+# # - Eligibility Criteria
+# # - Feaures & Benefits
+# # - Douments Required
+# # - Talk to AI Assistant
 
-- rule: Deactivate Conventional Card Form
-  condition:
-    - active_loop: conventional_card_form  
-  steps:
-     - action: conventional_card_form  
-     - active_loop: null
-     - action: action_show_json_response
+#************************************************Form 4 Flow**********************************************************************
+
+# #------------------------------------------------------------Personal Loan--------------------------------------------------------------
+# # Fixed options for each of conventional banking option
+# # - Product Offering
+# # - Documents Required
+# # - Eligibility Criteria
+# # - Personal Loan Calculator
+# # - Talk to AI Assistant
+
+# #------------------------------------------------------------Auto Loan--------------------------------------------------------------
+# # Fixed options for each of conventional banking option
+# # - Product Offering
+# # - Documents Required
+# # - Eligibility Criteria
+# # - Markup Rates
+# # - Apply for Auto Loan
+# # - Talk to AI Assistant
+
+# #------------------------------------------------------------Home Finance--------------------------------------------------------------
+# # Fixed options for each of conventional banking option
+# # - Policy
+# # - Documents Required
+# # - Eligibility Criteria
+# # - Markup Rates
+# # - Apply for Auto Loan
+# # - Talk to AI Assistant
+
+# #------------------------------------------------------------Instant Loan--------------------------------------------------------------
+# # Fixed options for each of conventional banking option
+# # - Product Offering
+# # - Documents Required
+# # - Eligibility Criteria
+# # - Markup Rates
+# # - Apply for Auto Loan
+# # - Talk to AI Assistant
+## -----------------------------------------------------------------
+
+# version: "3.1"
+
+# rules:
+# - rule: Start Debit Card Flow
+#   steps:
+#     - intent: debit_card_menu
+#     - action: action_ask_main_menu
+#     - slot_was_set:
+#       - menu_path: "debit_card_menu"
+
+# - rule: Handle Conventional Banking
+#   condition:
+#     - slot_was_set:
+#         - menu_path: "debit_card_menu"
+#   steps:
+#     - action: action_ask_conventional_card_type
+#     - intent: conventional_card_type
+#     - action: action_set_conventional_card_type
+
+# - rule: Handle Conventional Card Action
+#   condition:
+#     - slot_was_set: 
+#         - conventional_card_type: true
+#   steps:
+#     - action: action_ask_conventional_card_action
+#     - intent : conventional_card_action
+#     - action: action_set_conventional_card_action
+
+# - rule: Perform Json Action
+#   condition:
+#     - slot_was_set:
+#         - conventional_card_action: true
+#   steps:
+#     - action: action_show_json_response
+
+# rules:
+# - rule: Start Debit Card Flow
+#   steps:
+#     - intent: debit_card_menu
+#     - action: action_ask_main_menu
+#     - slot_was_set:
+#       - menu_path: "debit_card_menu"
+
+# - rule: Handle Conventional Banking
+#   condition:
+#     - slot_was_set:
+#       - menu_path: "debit_card_menu"
+#   steps:
+#     - intent: conventional_banking
+#     - action: action_ask_conventional_card_type
+
+# - rule: Handle Conventional Card Type
+#   condition:
+#     - slot_was_set:
+#       - menu_path: "debit_card_menu"
+#   steps:
+#     - intent: conventional_card_type
+#     - action: action_set_conventional_card_type
+
+# - rule: Handle Conventional Card Action
+#   condition:
+#     - slot_was_set: 
+#       - conventional_card_type: true
+#   steps:
+#     - action: action_ask_conventional_card_action
+#     - intent: conventional_card_action
+#     - action: action_set_conventional_card_action
+
+# - rule: Perform Json Action
+#   condition:
+#     - slot_was_set:
+#       - conventional_card_action: true
+#   steps:
+#     - action: action_show_json_response
+
+# - rule: Conventional Banking Flow
+#   condition:
+#     - slot_was_set:
+#       - menu_path: "debit_card_menu"
+#   steps:
+#     - intent: debit_cards_conventional_banking
+#     - action: action_ask_conventional_card_type
+#     - slot_was_set:
+#       - banking_type: "conventional"
+
+# - rule: Handle Card Type Selection
+#   condition:
+#     - slot_was_set:
+#       - banking_type: "conventional"
+#   steps:
+#     - intent: conventional_card_type
+#     - action: action_set_conventional_card_type
+#     - action: action_ask_conventional_card_action
+
+# - rule: Handle Conventional Card Action
+#   condition:
+#     - slot_was_set:
+#       - conventional_card_type: true
+#   steps:
+#     - intent: conventional_card_action
+#     - action: action_set_conventional_card_action
+#     - action: action_show_json_response
+# - rule: Repeat Card Action
+#   condition:
+#     - slot_was_set:
+#         - conventional_card_action: null
+#   steps:
+#     - action: action_ask_conventional_card_action
+#     - intent: conventional_card_action
+#     - action: action_set_conventional_card_action
+#     - action: action_show_json_response
+
+
+
 
 # Islamic Banking Path
 - rule: Handle Islamic Banking
@@ -82,7 +239,46 @@ rules:
       - active_loop: null
       - action: action_show_json_response
 
+
+
+# #****************************************************Credit Card*******************************************************************************
+# - rule: Start Credit Card Flow
+#   steps:
+#   - intent: credit_card_menu
+#   - action: 
+
+
+
+# #***********************************************Reset Slots*************************************************************************
 - rule: Reset slots 
   steps:
     - intent: reset_slots
     - action: action_reset_slots
+#**********************************************************************************************************************************
+
+- rule: Handle Banking Selection
+  steps:
+    - intent: conventional_banking
+    - slot_was_set:
+      - banking_type: "conventional"
+    - action: action_ask_conventional_card_type
+
+- rule: Handle Card Type
+  condition:
+    - slot_was_set:
+      - banking_type: "conventional"
+  steps:
+    - intent: conventional_card_type
+    - action: action_set_conventional_card_type
+    - action: action_ask_conventional_card_action
+
+
+- rule: Handle Conventional Card Flow
+  condition:
+    - slot_was_set:
+      - conventional_card_type: true
+  steps:
+  - intent: conventional_card_action
+  - action: action_set_conventional_card_action
+  - action: action_show_json_response
+  - action: action_reset_slots
