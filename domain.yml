@@ -1,4 +1,3 @@
-# version: "3.1"
 
 # intents:
 # #------------------------------------------------------------Debit Card--------------------------------------------------------------
@@ -61,7 +60,7 @@ slots:
     mappings:
       - type: from_entity
         entity: conventional_card_action
-        intent: inform
+
 
   islamic_card_type:
     type: text
@@ -84,18 +83,6 @@ slots:
       - type: from_entity
         entity: banking_type
     
-
-# forms:
-#   islamic_card_form:
-#     required_slots:
-#       - islamic_card_type
-#       - islamic_card_action
-      
-#   conventional_card_form:
-#     required_slots:
-#       - conventional_card_type
-#       - conventional_card_action
-
 
 actions:
   - action_show_json_response

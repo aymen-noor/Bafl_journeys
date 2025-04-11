@@ -72,6 +72,8 @@ class ActionAskConventionalCardType(Action):
                 ]
             )
         return [SlotSet("banking_type", "conventional")] 
+    
+
 class ActionAskConventionalCardAction(Action):
     def name(self) -> Text:
         return "action_ask_conventional_card_action"
@@ -82,10 +84,7 @@ class ActionAskConventionalCardAction(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
-        # Reset the 'inform' slot by returning SlotSet
-        # reset_inform_slot = SlotSet("inform", None)
-
-        # Check if conventional_card_action is not set
+        
         if not tracker.get_slot("conventional_card_action"):
             buttons = [
                 {
@@ -111,34 +110,83 @@ class ActionAskConventionalCardAction(Action):
         return []
    
 class ActionAskIslamicCardType(Action):
-
     def name(self) -> Text:
         return "action_ask_islamic_card_type"
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
-        print("inside action ask islamic cards")
-        dispatcher.utter_message(
-            text="Islamic Banking Cards:\n - bafl_paypak_islamic_classic_debit_card\n - bafl_visa_islamic_signature_card\n - bafl_islamic_power_pack_women_debit_card\n - bafl_islamic_gold_women_debit_card\n - bafl_visa_islamic_foreign_currency_debit_card\n - bafl_islamic_power_pack_signature_debit_card\n - bafl_visa_islamic_classic_debit_card"
-        )
-        banking_type="islamic_banking"
-        return[SlotSet("banking_type",banking_type)]
-
+        if not tracker.get_slot("islamic_card_type"):
+            dispatcher.utter_message(
+                text="Islamic Banking Cards:",
+                buttons=[
+                    {
+                        "title": "BAFL PayPak Islamic Classic Debit Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_paypak_islamic_classic_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Islamic Signature Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_visa_islamic_signature_card"}'
+                    },
+                    {
+                        "title": "BAFL Islamic Power Pack Women Debit Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_islamic_power_pack_women_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Islamic Gold Women Debit Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_islamic_gold_women_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Islamic Foreign Currency Debit Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_visa_islamic_foreign_currency_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Islamic Power Pack Signature Debit Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_islamic_power_pack_signature_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Islamic Classic Debit Card",
+                        "payload": '/islamic_card_type{"islamic_card_type":"bafl_visa_islamic_classic_debit_card"}'
+                    }
+                ]
+            )
+        return [SlotSet("banking_type", "islamic")]
  
+
 class ActionAskIslamicCardAction(Action):
     def name(self) -> Text:
         return "action_ask_islamic_card_action"
 
-    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
         
-        dispatcher.utter_message(
-            text="Options:\n1. Features & Benefits\n2. Limits & Charges\n3. Talk to AI",
-            buttons=[
-                {"title": "Features & Benefits", "payload": "features_&_benefits"},
-                {"title": "Limits & Charges", "payload": "limits_charges"},
-                {"title": "Talk to AI", "payload": "ai_assistant"}
+        if not tracker.get_slot("islamic_card_action"):
+            buttons = [
+                {
+                    "title": "Apply for Card",
+                    "payload": '/islamic_card_action{"islamic_card_action":"apply_for_card"}'
+                },
+                {
+                    "title": "Features & Benefits",
+                    "payload": '/islamic_card_action{"islamic_card_action":"features_&_benefits"}'
+                },
+                {
+                    "title": "Limits & Charges",
+                    "payload": '/islamic_card_action{"islamic_card_action":"limits_&_charges"}'
+                },
+                {
+                    "title": "Talk to AI",
+                    "payload": '/islamic_card_action{"islamic_card_action":"ai_assistant"}'
+                }
             ]
-        )
-        
+            
+            dispatcher.utter_message(
+                text="Please select an action:",
+                buttons=buttons
+            )
+
         return []
     
 #*******************************************************************************************************************************

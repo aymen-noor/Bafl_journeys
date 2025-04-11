@@ -125,7 +125,8 @@
 #       - action: action_show_json_response
 
 
-
+version: "3.1"
+rules:
 # #****************************************************Credit Card*******************************************************************************
 # - rule: Start Credit Card Flow
 #   steps:
@@ -146,14 +147,14 @@
         - menu_path: "debit_card_menu"  
 #*******************************************Conventional Banking***************************************************************************************
 
-- rule: Handle conventional Banking Selection
+- rule: Handle Conventional Banking Selection
   steps:
     - intent: conventional_banking
     - slot_was_set:
       - banking_type: "conventional"
     - action: action_ask_conventional_card_type
 
-- rule: Handle conventional Card Type
+- rule: Handle Conventional Card Type
   condition:
     - slot_was_set:
       - banking_type: "conventional"
@@ -173,14 +174,14 @@
   - action: action_show_json_response
 
 #************************************************Islamic Banking************************************************************
-- rule: Handle islamic Banking Selection
+- rule: Handle Islamic Banking Selection
   steps:
     - intent: islamic_banking
     - slot_was_set:
       - banking_type: "islamic"
     - action: action_ask_islamic_card_type
 
-- rule: Handle islamic Card Type
+- rule: Handle Islamic Card Type
   condition:
     - slot_was_set:
       - banking_type: "islamic"
