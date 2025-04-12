@@ -40,3 +40,19 @@ stories:
     - islamic_card_action: "apply_for_card"
   - action: action_set_islamic_card_action
   - action: action_show_json_response
+
+
+- story: Credit Card Flow
+  steps:
+  - intent: credit_card
+  - action: action_ask_credit_card_type
+  - intent: credit_card_type
+    entities:
+    - credit_card_type: "bank_alfalah_visa_platinum_credit_card"
+  - action: action_set_credit_card_type
+  - action: action_ask_credit_card_action
+  - intent: credit_card_action
+    entities:
+    - credit_card_action: "apply_for_card"
+  - action: action_set_credit_card_action
+  - action: action_show_json_response

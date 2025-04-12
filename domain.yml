@@ -76,6 +76,20 @@ slots:
       - type: from_entity
         entity: islamic_card_action
 
+  credit_card_type: 
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: credit_card_type
+
+  credit_card_action:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: credit_card_action
+
   banking_type:
     type: text
     influence_conversation: false
@@ -97,7 +111,10 @@ actions:
   - action_set_banking_type
   - action_set_islamic_card_type  
   - action_set_islamic_card_action  
-
+  - action_ask_credit_card_action
+  - action_ask_credit_card_type
+  - action_set_credit_card_type
+  - action_set_credit_card_action
 
 intents:
   - inform
@@ -109,6 +126,9 @@ intents:
   - islamic_card_type 
   - islamic_card_action  
   - reset_slots
+  - credit_card
+  - credit_card_type
+  - credit_card_action
 
 
 
@@ -119,6 +139,8 @@ entities:
   - islamic_card_type
   - islamic_card_action
   - banking_type
+  - credit_card_type
+  - credit_card_action
 
 session_config:
   session_expiration_time: 60

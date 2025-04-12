@@ -41,14 +41,27 @@ nlu:
 
 - intent: conventional_card_action
   examples: |
-    - apply_for_card
-    - features_&_benefits
     - limits_&_charges
     - talk_to_ai
 
 - intent: islamic_card_action
   examples: |
     - features_&_benefits
-    - limits_&_charges
     - talk_to_ai
 
+- intent: credit_card
+  examples: |
+    - credit_card
+
+- intent: credit_card_type
+  examples: |
+   - bank_alfalah_visa_platinum_credit_card
+   - bank_alfalah_visa_gold_credit_card
+   - bank_alfalah_visa_classic_credit_card
+   - bank_alfalah_american_express_card
+   - bank_alfalah_mastercard_optimus_credit_card
+
+- intent: credit_card_action
+  examples: |
+    - apply_for_card
+    - limits_&_charges

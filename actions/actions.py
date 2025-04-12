@@ -1,42 +1,11 @@
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
-# ========================
-# 3. Custom Action
-# ========================
-# actions/actions.py
-# actions.py
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 import json
 from rasa_sdk.events import SlotSet 
-   
-########################################## Ask Action Functions ################
+
+####################################################### Debit Card Flow #############################################################
+# Ask Action Functions
 class ActionAskMainMenu(Action):
     def name(self) -> Text:
         return "action_ask_main_menu"
@@ -62,17 +31,36 @@ class ActionAskConventionalCardType(Action):
                 text="Conventional Banking Cards:",
                 buttons=[
                     {
-                        "title": "BAFL Visa Foreign Currency",
-                        "payload": '/conventional_card_type{"conventional_card_type":"foreign_currency"}'
+                        "title": "BAFL Visa Foreign Currency Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_visa_foreign_currency_debit_card"}'
                     },
                     {
-                        "title": "BAFL Visa Classic",
-                        "payload": '/conventional_card_type{"conventional_card_type":"classic"}'
+                        "title": "BAFL Visa Classic Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_visa_classic_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Signature Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_visa_signature_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Platinum Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_visa_platinum_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Gold Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_visa_gold_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL Visa Pehchaan Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_visa_pehchaan_debit_card"}'
+                    },
+                    {
+                        "title": "BAFL PayPak Classic Debit Card",
+                        "payload": '/conventional_card_type{"conventional_card_type":"conventional_banking_bafl_paypak_classic_debit_card"}'
                     }
                 ]
             )
-        return [SlotSet("banking_type", "conventional")] 
-    
+        return [SlotSet("banking_type", "conventional")]  
 
 class ActionAskConventionalCardAction(Action):
     def name(self) -> Text:
@@ -96,7 +84,7 @@ class ActionAskConventionalCardAction(Action):
                     "payload": '/conventional_card_action{"conventional_card_action":"features_&_benefits"}'
                 },
                 {
-                    "title": "Limits & Charges",
+                    "title": "Card Limits & Annual Charges",
                     "payload": '/conventional_card_action{"conventional_card_action":"limits_&_charges"}'
                 }
             ]
@@ -173,7 +161,7 @@ class ActionAskIslamicCardAction(Action):
                     "payload": '/islamic_card_action{"islamic_card_action":"features_&_benefits"}'
                 },
                 {
-                    "title": "Limits & Charges",
+                    "title": "Card Limits & Annual Charges",
                     "payload": '/islamic_card_action{"islamic_card_action":"limits_&_charges"}'
                 },
                 {
@@ -199,22 +187,33 @@ class ActionShowJsonResponse(Action):
         if banking_type == "conventional":
             card_type = tracker.get_slot("conventional_card_type")
             card_action = tracker.get_slot("conventional_card_action")
-        else:
             card_type = tracker.get_slot("islamic_card_type")
             card_action = tracker.get_slot("islamic_card_action")
-
-
-        combined_key = f"{banking_type}/{card_type}/{card_action}"
-        dispatcher.utter_message(combined_key)
-        options = [
+            options = [
 
             "Apply for a card",
             "Features & Benefits",
-            "Limits & Charges"
+            "Limits & Charges",
+            "Talk to AI Assistant"
+            ]
+            dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
 
-        ]
+        elif banking_type == "islamic":
+            card_type = tracker.get_slot("islamic_card_type")
+            card_action = tracker.get_slot("islamic_card_action")
+            options = [
+            "Features & Benefits",
+            "Limits & Charges",
+            "Talk to AI Assistant"
+            ]
+            dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
+        elif banking_type == "credit_card":
+            card_type = tracker.get_slot("credit_card_type")
+            card_action = tracker.get_slot("credit_card_action")
 
-        dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
+        combined_key = f"{banking_type}/{card_type}/{card_action}"
+        dispatcher.utter_message(combined_key)
+        
        
         return [SlotSet("conventional_card_action", None)]
     
@@ -243,12 +242,6 @@ class ActionSetConventionalCardType(Action):
         print(card_type+"Hello")
         return [SlotSet("conventional_card_type", card_type)]
     
-# class ActionSetBankingType(Action): 
-#     def name(self) -> Text: return "action_set_banking_type"
-
-#     async def run(self, dispatcher, tracker, domain):
-#         return [SlotSet("banking_type", "conventional_banking")]
-    
 class ActionSetConventionalCardAction(Action):
     def name(self) -> Text:
         return "action_set_conventional_card_action"
@@ -266,7 +259,6 @@ class ActionSetIslamicCardType(Action):
 
     async def run(self, dispatcher, tracker, domain):
         print("hello")
-        # In any action
         print(f"Current slots: {tracker.slots}")
         card_type = next(tracker.get_latest_entity_values("islamic_card_type"), None)
         dispatcher.utter_message(f"DEBUG: Setting card type to {card_type}")  
@@ -284,4 +276,75 @@ class ActionSetIslamicCardAction(Action):
         dispatcher.utter_message(f"DEBUG: Set action to {card_action}")
         return [SlotSet("islamic_card_action", card_action)]
         
+########################################### Credit Card Flow ########################################################
+class ActionAskCreditCardType(Action):
+    def name(self) -> Text:
+        return "action_ask_credit_card_type"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        credit_card_options = [
+            "Bank Alfalah Mastercard Optimus Credit Card",
+            "Bank Alfalah Visa Platinum  Credit Card",
+            "Bank Alfalah Visa Gold Credit Card",
+            "Bank Alfalah Visa Classic Credit Card",
+            "Bank Alfalah American Express Credit Card",
+            "Bank Alfalah Ultra Cashback Credit Card"
+        ]
         
+        if not tracker.get_slot("credit_card_type"):
+            dispatcher.utter_message(
+                text="Please select your credit card type:",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/credit_card_type{{"credit_card_type":"{option.lower().replace(" ", "_")}"}}'
+                } for option in credit_card_options]
+            )
+        
+        return [SlotSet("banking_type", "credit_card")]
+class ActionAskCreditCardAction(Action):
+    def name(self) -> Text:
+        return "action_ask_credit_card_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        options = [
+            "Apply for a card",
+            "Features & Benefits",
+            "Card Limits & Annual Charges",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("credit_card_action"):
+            dispatcher.utter_message(
+                text="What would you like to do next?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/credit_card_action{{"credit_card_action":"{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return []
+    
+#**************************************************************************************************************************************
+class ActionSetCreditCardType(Action):
+    def name(self) -> Text:
+        return "action_set_credit_card_type"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        card_type = next(tracker.get_latest_entity_values("credit_card_type"), None)
+        dispatcher.utter_message(f"DEBUG: Setting credit card type to {card_type}")
+        print(f"Setting credit card type slot to: {card_type}")   
+        return [SlotSet("credit_card_type", card_type)]
+
+
+class ActionSetCreditCardAction(Action):
+    def name(self) -> Text:
+        return "action_set_credit_card_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        card_action = next(tracker.get_latest_entity_values("credit_card_action"), None)
+        dispatcher.utter_message(f"DEBUG: Setting credit card action to {card_action}")
+        print(f"Setting credit card action slot to: {card_action}")
+        
+        return [SlotSet("credit_card_action", card_action)]
+    
+#***********************************************************************************************************************************

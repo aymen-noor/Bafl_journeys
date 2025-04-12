@@ -35,7 +35,6 @@
 # - limit_and_annual_charges
 # - talk_to_ai
 
-#************************************************Debit Card Flow**********************************************************************
 #************************************************Credit Card Flow**********************************************************************
 # # credit card
 # - credit_card_menu
@@ -199,3 +198,28 @@ rules:
   - intent: islamic_card_action
   - action: action_set_islamic_card_action
   - action: action_show_json_response
+#***************************************************Credit Card Flow ***********************************************************
+- rule: Handle Credit Card
+  steps:
+    - intent: credit_card
+    - slot_was_set:
+      - banking_type: "credit_card"
+    - action: action_ask_credit_card_type
+
+- rule: Handle Credit Card Type
+  condition:
+    - slot_was_set:
+      - banking_type: "credit_card"
+  steps:
+    - intent: credit_card_type
+    - action: action_set_credit_card_type
+    - action: action_ask_credit_card_action
+
+- rule: Handle Credit Card Flow
+  condition:
+    - slot_was_set:
+      - credit_card_type: true
+  steps:
+    - intent: credit_card_action
+    - action: action_set_credit_card_action
+    - action: action_show_json_response
