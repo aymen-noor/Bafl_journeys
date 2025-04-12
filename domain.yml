@@ -96,7 +96,22 @@ slots:
     mappings:
       - type: from_entity
         entity: banking_type
-    
+
+  roshan_digital_account_type:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: roshan_digital_account_type
+
+  roshan_digital_account_action:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: roshan_digital_account_action
+ 
+
 
 actions:
   - action_show_json_response
@@ -115,6 +130,11 @@ actions:
   - action_ask_credit_card_type
   - action_set_credit_card_type
   - action_set_credit_card_action
+  - action_ask_roshan_digital_account_type
+  - action_ask_roshan_digital_account_action
+  - action_set_roshan_digital_account_type
+  - action_set_roshan_digital_account_action
+
 
 intents:
   - inform
@@ -129,6 +149,9 @@ intents:
   - credit_card
   - credit_card_type
   - credit_card_action
+  - roshan_digital_account_type
+  - roshan_digital_account_action
+  - roshan_digital_account
 
 
 
@@ -141,6 +164,9 @@ entities:
   - banking_type
   - credit_card_type
   - credit_card_action
+  - roshan_digital_account_type
+  - roshan_digital_account_action
+
 
 session_config:
   session_expiration_time: 60

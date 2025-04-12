@@ -348,3 +348,72 @@ class ActionSetCreditCardAction(Action):
         return [SlotSet("credit_card_action", card_action)]
     
 #***********************************************************************************************************************************
+#***************************************************Roshan Digital Account *********************************************************
+class ActionAskRoshanDigitalAccountType(Action):
+    def name(self) -> Text:
+        return "action_ask_roshan_digital_account_type"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        rda_options = [
+            "Conventional RDA",
+            "Islamic RDA"
+        ]
+        
+        if not tracker.get_slot("roshan_digital_account_type"):
+            dispatcher.utter_message(
+                text="Please select your Roshan Digital Account type:",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/roshan_digital_account_type{{"roshan_digital_account_type":"{option.lower().replace(" ", "_")}"}}'
+                } for option in rda_options]
+            )
+        
+        return [SlotSet("banking_type", "roshan_digital_account")]
+
+class ActionAskRoshanDigitalAccountAction(Action):
+    def name(self) -> Text:
+        return "action_ask_roshan_digital_account_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        options = [
+            "Roshan Product",
+            "Eligibility Criteria",
+            "Features & Benefits",
+            "Documents Required",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("roshan_account_action"):
+            dispatcher.utter_message(
+                text="What would you like to know about the Roshan Digital Account?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/roshan_account_action{{"roshan_account_action":"{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return []
+#*************************************************************************************************************************************
+class ActionSetRoshanDigitalAccountType(Action):
+    def name(self) -> Text:
+        return "action_set_roshan_digital_account_type"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        account_type = next(tracker.get_latest_entity_values("roshan_digital_account_type"), None)
+        dispatcher.utter_message(f"DEBUG: Setting Roshan Digital Account type to {account_type}")
+        print(f"Setting Roshan Digital Account type slot to: {account_type}")   
+        return [SlotSet("roshan_digital_account_type", account_type)]
+
+
+class ActionSetRoshanDigitalAccountAction(Action):
+    def name(self) -> Text:
+        return "action_set_roshan_digital_account_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        account_action = next(tracker.get_latest_entity_values("roshan_digital_account_action"), None)
+        dispatcher.utter_message(f"DEBUG: Setting Roshan Digital Account action to {account_action}")
+        print(f"Setting Roshan Digital Account action slot to: {account_action}")
+        
+        return [SlotSet("roshan_digital_account_action", account_action)]
+    
+#**************************************************************************************************************************************

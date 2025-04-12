@@ -65,3 +65,17 @@ nlu:
   examples: |
     - apply_for_card
     - limits_&_charges
+
+- intent: roshan_digital_account_type
+  examples: |
+    - conventional_rda
+    - islamic_rda
+
+- intent: roshan_digital_account_action
+  examples: |
+    - roshan_product
+    - eligibility_criteria
+
+- intent: roshan_digital_account
+  examples: |
+    - roshan_digital_account

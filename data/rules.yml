@@ -51,7 +51,7 @@
 # # - Card Limit and Annual Charges
 # # - Talk to AI Assistant
 
-#************************************************Credit Card Flow**********************************************************************
+#************************************************Roshan Digital Account flow**********************************************************************
 
 #************************************************Form 4 Flow**********************************************************************
 
@@ -104,25 +104,6 @@
 # # - Apply for Auto Loan
 # # - Talk to AI Assistant
 ## -----------------------------------------------------------------
-
-# # Islamic Banking Path
-# - rule: Handle Islamic Banking
-#   condition:
-#     - slot_was_set:
-#         - menu_path: "debit_card_menu"
-#   steps:
-#     - intent: debit_cards_islamic_banking
-#     - action: islamic_card_form 
-#     - active_loop: islamic_card_form  
-
-# - rule: Deactivate Islamic Card Form
-#   condition:
-#     - active_loop: islamic_card_form  
-#   steps:
-#       - action: islamic_card_form  
-#       - active_loop: null
-#       - action: action_show_json_response
-
 
 version: "3.1"
 rules:
@@ -222,4 +203,29 @@ rules:
   steps:
     - intent: credit_card_action
     - action: action_set_credit_card_action
+    - action: action_show_json_response
+#*********************************************** Rosahan Digital Account ***********************************************************
+- rule: Handle RDA Account
+  steps:
+    - intent: roshan_digital_account
+    - slot_was_set:
+      - banking_type: "roshan_digital_account"
+    - action: action_ask_roshan_digital_account_type
+
+- rule: Handle Roshan Digital Account Type
+  condition:
+    - slot_was_set:
+      - banking_type: "roshan_digital_account"
+  steps:
+    - intent: roshan_digital_account_type
+    - action: action_set_roshan_digital_account_type
+    - action: action_ask_roshan_digital_account_action
+
+- rule: Handle Credit Card Flow
+  condition:
+    - slot_was_set:
+      - credit_card_type: true
+  steps:
+    - intent: roshan_digital_account_action
+    - action: action_set_roshan_digital_account_action
     - action: action_show_json_response
