@@ -41,13 +41,16 @@ nlu:
 
 - intent: conventional_card_action
   examples: |
-    - limits_&_charges
-    - talk_to_ai
+    - conventional/apply_for_card
+    - conventional/features_and_benefits
+    - conventional/limits_and_annual_charges
+    - conventional/talk_to_ai_assistant
 
 - intent: islamic_card_action
   examples: |
-    - islamic/features_&_benefits
-    - islamic/talk_to_ai
+    - islamic/talk_to_ai_assistant
+    - islamic/features_and_benefits
+    - islamic/limits_and_annual_charges
 
 - intent: credit_card
   examples: |
@@ -65,6 +68,9 @@ nlu:
   examples: |
     - credit_card/apply_for_card
     - credit_card/limits_&_charges
+    - credit_card/features_and_benefits
+    - credit_card/card_limit_and_annual_charges
+    - credit_card/talk_to_ai_assistant
 
 - intent: roshan_digital_account_type
   examples: |
@@ -73,8 +79,11 @@ nlu:
 
 - intent: roshan_digital_account_action
   examples: |
-    - roshan_product
-    - eligibility_criteria
+    - rda/roshan_product
+    - rda/eligibility_criteria
+    - rda/features_&_benefits
+    - rda/documents_required
+    - rda/talk_to_ai_assistant
 
 - intent: roshan_digital_account
   examples: |

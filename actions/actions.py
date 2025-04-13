@@ -62,40 +62,7 @@ class ActionAskConventionalCardType(Action):
             )
         return [SlotSet("banking_type", "conventional")]  
 
-class ActionAskConventionalCardAction(Action):
-    def name(self) -> Text:
-        return "action_ask_conventional_card_action"
 
-    async def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any]
-    ) -> List[Dict[Text, Any]]:
-        
-        if not tracker.get_slot("conventional_card_action"):
-            buttons = [
-                {
-                    "title": "Apply for Card",
-                    "payload": '/conventional_card_action{"conventional_card_action":"apply_for_card"}'
-                },
-                {
-                    "title": "Features & Benefits",
-                    "payload": '/conventional_card_action{"conventional_card_action":"features_&_benefits"}'
-                },
-                {
-                    "title": "Card Limits & Annual Charges",
-                    "payload": '/conventional_card_action{"conventional_card_action":"limits_&_charges"}'
-                }
-            ]
-            
-            dispatcher.utter_message(
-                text="Please select an action:",
-                buttons=buttons
-            )
-
-        
-        return []
    
 class ActionAskIslamicCardType(Action):
     def name(self) -> Text:
@@ -137,7 +104,35 @@ class ActionAskIslamicCardType(Action):
                 ]
             )
         return [SlotSet("banking_type", "islamic")]
- 
+    
+class ActionAskConventionalCardAction(Action):
+    def name(self) -> Text:
+        return "action_ask_conventional_card_action"
+
+    async def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        
+        options = [
+            "Apply for a card",
+            "Features & Benefits",
+            "Limits & Charges",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("conventional_card_action"):
+            dispatcher.utter_message(
+                text="Please select an action:",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/conventional_card_action{{"conventional_card_action":"conventional/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return [] 
 
 class ActionAskIslamicCardAction(Action):
     def name(self) -> Text:
@@ -150,29 +145,19 @@ class ActionAskIslamicCardAction(Action):
         domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
         
+        options = [
+            "Features & Benefits",
+            "Limits & Charges",
+            "Talk to AI Assistant"
+        ]
+        
         if not tracker.get_slot("islamic_card_action"):
-            buttons = [
-                {
-                    "title": "Apply for Card",
-                    "payload": '/islamic_card_action{"islamic_card_action":"apply_for_card"}'
-                },
-                {
-                    "title": "Features & Benefits",
-                    "payload": '/islamic_card_action{"islamic_card_action":"features_&_benefits"}'
-                },
-                {
-                    "title": "Card Limits & Annual Charges",
-                    "payload": '/islamic_card_action{"islamic_card_action":"limits_&_charges"}'
-                },
-                {
-                    "title": "Talk to AI",
-                    "payload": '/islamic_card_action{"islamic_card_action":"ai_assistant"}'
-                }
-            ]
-            
             dispatcher.utter_message(
                 text="Please select an action:",
-                buttons=buttons
+                buttons=[{
+                    "title": option,
+                    "payload": f'/islamic_card_action{{"islamic_card_action":"islamic/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
             )
 
         return []
@@ -183,46 +168,91 @@ class ActionShowJsonResponse(Action):
         return "action_show_json_response"
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict) -> list:
-        banking_type=tracker.get_slot("banking_type")
+        banking_type = tracker.get_slot("banking_type")
+        
         if banking_type == "conventional":
             card_type = tracker.get_slot("conventional_card_type")
             card_action = tracker.get_slot("conventional_card_action")
-            options = [
-
-            "Apply for a card",
-            "Features & Benefits",
-            "Limits & Charges",
-            "Talk to AI Assistant"
-            ]
-            dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
-            combined_key = f"{banking_type}/{card_type}/{card_action}"
+            combined_key = f"{banking_type}/{card_type}/{card_action}" if card_action else f"{banking_type}/{card_type}/None"
             dispatcher.utter_message(combined_key)
-            SlotSet("conventional_card_action", None)
+            options = [
+                "Apply for a card",
+                "Features & Benefits",
+                "Limits & Charges",
+                "Talk to AI Assistant"
+            ]
+            dispatcher.utter_message(
+                text="Please select an action:",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/conventional_card_action{{"conventional_card_action":"conventional/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+            
+            return [SlotSet("conventional_card_action", None)]
 
         elif banking_type == "islamic":
             card_type = tracker.get_slot("islamic_card_type")
             card_action = tracker.get_slot("islamic_card_action")
-            options = [
-            "Features & Benefits",
-            "Limits & Charges",
-            "Talk to AI Assistant"
-            ]
-            dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
-            combined_key = f"{banking_type}/{card_type}/{card_action}"
+            combined_key = f"{banking_type}/{card_type}/{card_action}" if card_action else f"{banking_type}/{card_type}/None"
             dispatcher.utter_message(combined_key)
-            SlotSet("islamic_card_action", None)
+            options = [
+                "Features & Benefits",
+                "Limits & Charges",
+                "Talk to AI Assistant"
+            ]
+            dispatcher.utter_message(
+                text="Please select an action:",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/islamic_card_action{{"islamic_card_action":"islamic/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+            
+            return [SlotSet("islamic_card_action", None)]
 
         elif banking_type == "credit_card":
             card_type = tracker.get_slot("credit_card_type")
             card_action = tracker.get_slot("credit_card_action")
-            combined_key = f"{banking_type}/{card_type}/{card_action}"
+            combined_key = f"{banking_type}/{card_type}/{card_action}" if card_action else f"{banking_type}/{card_type}/None"
             dispatcher.utter_message(combined_key)
-            SlotSet("credit_card_action", None)
+            options = [
+                "Apply for a card",
+                "Features & Benefits",
+                "Card Limits & Annual Charges",
+                "Talk to AI Assistant"
+            ]
+            dispatcher.utter_message(
+                text="What would you like to do next regarding Credit Cards?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/credit_card_action{{"credit_card_action":"credit_card/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+            return [SlotSet("credit_card_action", None)]
+        elif banking_type == "roshan_digital_account":
+            card_type = tracker.get_slot("roshan_digital_account_type")
+            account_action = tracker.get_slot("roshan_digital_account_action")
+            combined_key = f"{banking_type}/{card_type}/{account_action}" if account_action else f"{banking_type}/{card_type}/None"
+            dispatcher.utter_message(combined_key)
+            options = [
+                "Roshan Product",
+                "Eligibility Criteria",
+                "Features & Benefits",
+                "Documents Required",
+                "Talk to AI Assistant"
+            ]
+            dispatcher.utter_message(
+                text="What would you like to know about the Roshan Digital Account?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/roshan_digital_account_action{{"roshan_digital_account_action":"rda/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+            return [SlotSet("roshan_digital_account_action", None)]
 
-        
-        
-       
         return []
+
     
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class ActionResetSlots(Action):
@@ -255,6 +285,8 @@ class ActionSetConventionalCardAction(Action):
 
     async def run(self, dispatcher, tracker, domain):
         card_action = next(tracker.get_latest_entity_values("conventional_card_action"), None)
+        if card_action and card_action.startswith("conventional/"):
+            card_action = card_action.replace("conventional/", "")
         print(card_action)
         dispatcher.utter_message(f"DEBUG: Set action to {card_action}")
         return [SlotSet("conventional_card_action", card_action)]
@@ -279,6 +311,8 @@ class ActionSetIslamicCardAction(Action):
 
     async def run(self, dispatcher, tracker, domain):
         card_action = next(tracker.get_latest_entity_values("islamic_card_action"), None)
+        if card_action and card_action.startswith("islamic/"):
+            card_action = card_action.replace("islamic/", "")
         print(card_action)
         dispatcher.utter_message(f"DEBUG: Set action to {card_action}")
         return [SlotSet("islamic_card_action", card_action)]
@@ -308,6 +342,7 @@ class ActionAskCreditCardType(Action):
             )
         
         return [SlotSet("banking_type", "credit_card")]
+
 class ActionAskCreditCardAction(Action):
     def name(self) -> Text:
         return "action_ask_credit_card_action"
@@ -322,14 +357,15 @@ class ActionAskCreditCardAction(Action):
         
         if not tracker.get_slot("credit_card_action"):
             dispatcher.utter_message(
-                text="What would you like to do next?",
+                text="What would you like to do next regarding Credit Cards?",
                 buttons=[{
                     "title": option,
-                    "payload": f'/credit_card_action{{"credit_card_action":"{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                    "payload": f'/credit_card_action{{"credit_card_action":"credit_card/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
                 } for option in options]
             )
         
         return []
+    
     
 #**************************************************************************************************************************************
 class ActionSetCreditCardType(Action):
@@ -349,6 +385,10 @@ class ActionSetCreditCardAction(Action):
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         card_action = next(tracker.get_latest_entity_values("credit_card_action"), None)
+        
+        if card_action and card_action.startswith("credit_card/"):
+            card_action = card_action.replace("credit_card/", "")
+        
         dispatcher.utter_message(f"DEBUG: Setting credit card action to {card_action}")
         print(f"Setting credit card action slot to: {card_action}")
         
@@ -376,7 +416,7 @@ class ActionAskRoshanDigitalAccountType(Action):
             )
         
         return [SlotSet("banking_type", "roshan_digital_account")]
-
+    
 class ActionAskRoshanDigitalAccountAction(Action):
     def name(self) -> Text:
         return "action_ask_roshan_digital_account_action"
@@ -390,16 +430,17 @@ class ActionAskRoshanDigitalAccountAction(Action):
             "Talk to AI Assistant"
         ]
         
-        if not tracker.get_slot("roshan_account_action"):
+        if not tracker.get_slot("roshan_digital_account_action"):
             dispatcher.utter_message(
                 text="What would you like to know about the Roshan Digital Account?",
                 buttons=[{
                     "title": option,
-                    "payload": f'/roshan_account_action{{"roshan_account_action":"{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                    "payload": f'/roshan_digital_account_action{{"roshan_digital_account_action":"rda/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
                 } for option in options]
             )
         
         return []
+
 #*************************************************************************************************************************************
 class ActionSetRoshanDigitalAccountType(Action):
     def name(self) -> Text:
@@ -418,6 +459,8 @@ class ActionSetRoshanDigitalAccountAction(Action):
 
     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         account_action = next(tracker.get_latest_entity_values("roshan_digital_account_action"), None)
+        if account_action and account_action.startswith("rda/"):
+            account_action = account_action.replace("rda/", "")
         dispatcher.utter_message(f"DEBUG: Setting Roshan Digital Account action to {account_action}")
         print(f"Setting Roshan Digital Account action slot to: {account_action}")
         
