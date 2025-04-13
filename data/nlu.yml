@@ -46,8 +46,8 @@ nlu:
 
 - intent: islamic_card_action
   examples: |
-    - features_&_benefits
-    - talk_to_ai
+    - islamic/features_&_benefits
+    - islamic/talk_to_ai
 
 - intent: credit_card
   examples: |
@@ -63,8 +63,8 @@ nlu:
 
 - intent: credit_card_action
   examples: |
-    - apply_for_card
-    - limits_&_charges
+    - credit_card/apply_for_card
+    - credit_card/limits_&_charges
 
 - intent: roshan_digital_account_type
   examples: |
@@ -79,3 +79,53 @@ nlu:
 - intent: roshan_digital_account
   examples: |
     - roshan_digital_account
+
+- intent: personal_loan
+  examples: |
+    - personal_loan
+
+- intent: personal_loan_action
+  examples: |
+    - personal_loan/personal_loan_calculator
+    - personal_loan/documents_required
+    - personal_loan/eligibility_criteria
+    - personal_loan/talk_to_ai_assistant
+    - personal_loan/product_offering
+
+- intent: auto_loan
+  examples: |
+    - auto_loan
+    
+- intent: auto_loan_action
+  examples: |
+    - auto_loan/product_offering
+    - auto_loan/documents_required
+    - auto_loan/eligibility_criteria
+    - auto_loan/markup_rates
+    - auto_loan/apply_for_auto_loan
+    - auto_loan/talk_to_ai_assistant
+- intent: home_finance
+  examples: |
+    - home_finance
+
+- intent: home_finance_action
+  examples: |
+    - home_finance/policy
+    - home_finance/documents_required
+    - home_finance/eligibility_criteria
+    - home_finance/markup_rates
+    - home_finance/apply_for_auto_loan
+    - home_finance/talk_to_ai_assistant
+
+- intent: instant_loan
+  examples: |
+    - instant_loan
+
+- intent: instant_loan_action
+  examples: |
+    - instant_loan/product_offering
+    - instant_loan/documents_required
+    - instant_loan/eligibility_criteria
+    - instant_loan/markup_rates
+    - instant_loan/apply_for_auto_loan
+    - instant_loan/talk_to_ai_assistant

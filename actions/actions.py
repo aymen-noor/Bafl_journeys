@@ -187,8 +187,6 @@ class ActionShowJsonResponse(Action):
         if banking_type == "conventional":
             card_type = tracker.get_slot("conventional_card_type")
             card_action = tracker.get_slot("conventional_card_action")
-            card_type = tracker.get_slot("islamic_card_type")
-            card_action = tracker.get_slot("islamic_card_action")
             options = [
 
             "Apply for a card",
@@ -197,6 +195,9 @@ class ActionShowJsonResponse(Action):
             "Talk to AI Assistant"
             ]
             dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
+            combined_key = f"{banking_type}/{card_type}/{card_action}"
+            dispatcher.utter_message(combined_key)
+            SlotSet("conventional_card_action", None)
 
         elif banking_type == "islamic":
             card_type = tracker.get_slot("islamic_card_type")
@@ -207,15 +208,21 @@ class ActionShowJsonResponse(Action):
             "Talk to AI Assistant"
             ]
             dispatcher.utter_message(text="What would you like to do next?", buttons=[{"title": option, "payload": f"/conventional_card_action{{\"conventional_card_action\":\"{option.lower().replace(' ', '_')}\"}}" } for option in options])
+            combined_key = f"{banking_type}/{card_type}/{card_action}"
+            dispatcher.utter_message(combined_key)
+            SlotSet("islamic_card_action", None)
+
         elif banking_type == "credit_card":
             card_type = tracker.get_slot("credit_card_type")
             card_action = tracker.get_slot("credit_card_action")
+            combined_key = f"{banking_type}/{card_type}/{card_action}"
+            dispatcher.utter_message(combined_key)
+            SlotSet("credit_card_action", None)
 
-        combined_key = f"{banking_type}/{card_type}/{card_action}"
-        dispatcher.utter_message(combined_key)
+        
         
        
-        return [SlotSet("conventional_card_action", None)]
+        return []
     
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 class ActionResetSlots(Action):
@@ -417,3 +424,249 @@ class ActionSetRoshanDigitalAccountAction(Action):
         return [SlotSet("roshan_digital_account_action", account_action)]
     
 #**************************************************************************************************************************************
+class ActionShowLoanPath(Action):
+
+    def name(self) -> Text:
+        return "action_show_loan_path"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        loan_type = tracker.get_slot("loan_type")
+        print(loan_type)
+
+        if loan_type == "personal_loan":
+            loan_action = tracker.get_slot("personal_loan_action")
+            print(loan_action)
+            combined_key = loan_action
+            dispatcher.utter_message(combined_key)
+            [SlotSet("personal_loan_action", None)]  
+            options = [
+                "Product Offering",
+                "Documents Required",
+                "Eligibility Criteria",
+                "Personal Loan Calculator",
+                "Talk to AI Assistant"
+            ]
+        
+            dispatcher.utter_message(
+                text="What would you like to know about Personal Loans?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/personal_loan_action{{"personal_loan_action": "personal_loan/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+
+        elif loan_type == "home_finance":
+            loan_action = tracker.get_slot("home_finance_action")
+            print(loan_action)
+            combined_key = loan_action
+            dispatcher.utter_message(combined_key)
+            [SlotSet("home_finance_action", None)]
+            options = [
+                "Policy",
+                "Documents Required",
+                "Eligibility Criteria",
+                "Markup Rates",
+                "Apply for Auto Loan",
+                "Talk to AI Assistant"
+            ]
+        
+            dispatcher.utter_message(
+                text="What would you like to know about Home Finance?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/home_finance_action{{"home_finance_action": "home_finance/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+
+        elif loan_type == "instant_loan":
+            loan_action = tracker.get_slot("instant_loan_action")
+            print(loan_action)
+            combined_key = loan_action
+            dispatcher.utter_message(combined_key)
+            [SlotSet("instant_loan_action", None)]
+            options = [
+                "Product Offering",
+                "Documents Required",
+                "Eligibility Criteria",
+                "Markup Rates",
+                "Apply for Auto Loan",
+                "Talk to AI Assistant"
+            ]
+        
+            dispatcher.utter_message(
+                text="What would you like to know about Instant Loans?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/instant_loan_action{{"instant_loan_action": "instant_loan/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+
+        elif loan_type == "auto_loan":
+            loan_action = tracker.get_slot("auto_loan_action")
+            print(loan_action)
+            combined_key = loan_action
+            dispatcher.utter_message(combined_key)
+            [SlotSet("auto_loan_action", None)]
+            options = [
+                "Product Offering",
+                "Documents Required",
+                "Eligibility Criteria",
+                "Markup Rates",
+                "Apply for Auto Loan",
+                "Talk to AI Assistant"
+            ]
+        
+            dispatcher.utter_message(
+                text="What would you like to know about Auto Loans?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/auto_loan_action{{"auto_loan_action": "auto_loan/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+
+        return []
+#################################################### Types of Loans ############################################################
+ #********************************************* Personal Loan ******************************************************************
+class ActionAskPersonalLoanAction(Action):
+    def name(self) -> Text:
+        return "action_ask_personal_loan_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        options = [
+            "Product Offering",
+            "Documents Required",
+            "Eligibility Criteria",
+            "Personal Loan Calculator",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("personal_loan_action"):
+            dispatcher.utter_message(
+                text="What would you like to know about Personal Loans?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/personal_loan_action{{"personal_loan_action": "personal_loan/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return [SlotSet("loan_type", "personal_loan")]
+        
+class ActionSetPersonalLoanAction(Action):
+    def name(self) -> Text:
+        return "action_set_personal_loan_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        personal_loan_action = next(tracker.get_latest_entity_values("personal_loan_action"), None)
+        dispatcher.utter_message(f"DEBUG: Setting Personal Loan action to {personal_loan_action}")
+        print(f"Setting Personal Loan action slot to: {personal_loan_action}")
+        
+        return [SlotSet("personal_loan_action", personal_loan_action)]
+#***************************************** Auto Loan***************************************************************************
+
+class ActionAskAutoLoanAction(Action):
+    def name(self) -> Text:
+        return "action_ask_auto_loan_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        options = [
+            "Product Offering",
+            "Documents Required",
+            "Eligibility Criteria",
+            "Markup Rates",
+            "Apply for Auto Loan",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("auto_loan_action"):
+            dispatcher.utter_message(
+                text="What would you like to know about Auto Loans?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/auto_loan_action{{"auto_loan_action": "auto_loan/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return [SlotSet("loan_type", "auto_loan")]
+
+class ActionSetAutoLoanAction(Action):
+    def name(self) -> Text:
+        return "action_set_auto_loan_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        auto_loan_action = next(tracker.get_latest_entity_values("auto_loan_action"), None)
+        dispatcher.utter_message(f"DEBUG: Setting Auto Loan action to {auto_loan_action}")
+        print(f"Setting Auto Loan action slot to: {auto_loan_action}")
+        
+        return [SlotSet("auto_loan_action", auto_loan_action)]
+#********************************************** Home Finance  *********************************************************************
+class ActionAskHomeFinanceAction(Action):
+    def name(self) -> Text:
+        return "action_ask_home_finance_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        options = [
+            "Policy",
+            "Documents Required",
+            "Eligibility Criteria",
+            "Markup Rates",
+            "Apply for Auto Loan",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("home_finance_action"):
+            dispatcher.utter_message(
+                text="What would you like to know about Home Finance?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/home_finance_action{{"home_finance_action": "home_finance/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return [SlotSet("loan_type", "home_finance")]
+
+class ActionSetHomeFinanceAction(Action):
+    def name(self) -> Text:
+        return "action_set_home_finance_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        home_finance_action = next(tracker.get_latest_entity_values("home_finance_action"), None)
+        dispatcher.utter_message(f"DEBUG: Setting Home Finance action to {home_finance_action}")
+        print(f"Setting Home Finance action slot to: {home_finance_action}")
+        
+        return [SlotSet("home_finance_action", home_finance_action)]
+#********************************************Instant Loan ****************************************************************
+class ActionAskInstantLoanAction(Action):
+    def name(self) -> Text:
+        return "action_ask_instant_loan_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        options = [
+            "Product Offering",
+            "Documents Required",
+            "Eligibility Criteria",
+            "Markup Rates",
+            "Apply for Auto Loan",
+            "Talk to AI Assistant"
+        ]
+        
+        if not tracker.get_slot("instant_loan_action"):
+            dispatcher.utter_message(
+                text="What would you like to know about Instant Loans?",
+                buttons=[{
+                    "title": option,
+                    "payload": f'/instant_loan_action{{"instant_loan_action": "instant_loan/{option.lower().replace(" ", "_").replace("&", "and")}"}}'
+                } for option in options]
+            )
+        
+        return [SlotSet("loan_type", "instant_loan")]
+
+class ActionSetInstantLoanAction(Action):
+    def name(self) -> Text:
+        return "action_set_instant_loan_action"
+
+    async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        instant_loan_action = next(tracker.get_latest_entity_values("instant_loan_action"), None)
+        dispatcher.utter_message(f"DEBUG: Setting Instant Loan action to {instant_loan_action}")
+        print(f"Setting Instant Loan action slot to: {instant_loan_action}")
+        
+        return [SlotSet("instant_loan_action", instant_loan_action)]

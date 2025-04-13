@@ -229,3 +229,71 @@ rules:
     - intent: roshan_digital_account_action
     - action: action_set_roshan_digital_account_action
     - action: action_show_json_response
+
+#**************************************************** Types of Loans ******************************************************************
+# Personal Loans
+- rule: Handle Personal Loan
+  steps:
+    - intent: personal_loan
+    - slot_was_set:
+      - loan_type: "personal_loan"
+    - action: action_ask_personal_loan_action
+
+- rule: Handle Personal Loan Type
+  condition:
+    - slot_was_set:
+      - loan_type: "personal_loan"
+  steps:
+    - intent: personal_loan_action
+    - action: action_set_personal_loan_action
+    - action: action_show_loan_path
+
+# Auto Loan
+
+- rule: Handle Auto Loan
+  steps:
+    - intent: auto_loan
+    - slot_was_set:
+      - loan_type: "auto_loan"
+    - action: action_ask_auto_loan_action
+
+- rule: Handle Auto Loan Type
+  condition:
+    - slot_was_set:
+      - loan_type: "auto_loan"
+  steps:
+    - intent: auto_loan_action
+    - action: action_set_auto_loan_action
+    - action: action_show_loan_path
+# Home Finance
+- rule: Handle Home Finance
+  steps:
+    - intent: home_finance
+    - slot_was_set:
+      - loan_type: "home_finance"
+    - action: action_ask_home_finance_action
+
+- rule: Handle Home Finance Action
+  condition:
+    - slot_was_set:
+      - loan_type: "home_finance"
+  steps:
+    - intent: home_finance_action
+    - action: action_set_home_finance_action
+    - action: action_show_loan_path
+# Instant Loan
+- rule: Handle Instant Loan
+  steps:
+    - intent: instant_loan
+    - slot_was_set:
+      - loan_type: "instant_loan"
+    - action: action_ask_instant_loan_action
+
+- rule: Handle Instant Loan Action
+  condition:
+    - slot_was_set:
+      - loan_type: "instant_loan"
+  steps:
+    - intent: instant_loan_action
+    - action: action_set_instant_loan_action
+    - action: action_show_loan_path

@@ -110,7 +110,42 @@ slots:
     mappings:
     - type: from_entity
       entity: roshan_digital_account_action
- 
+
+  loan_type:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: loan_type
+  
+  personal_loan_action:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: personal_loan_action
+
+  home_finance_action:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: home_finance_action
+
+  instant_loan_action:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: instant_loan_action
+
+  auto_loan_action:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: auto_loan_action
+
 
 
 actions:
@@ -134,6 +169,16 @@ actions:
   - action_ask_roshan_digital_account_action
   - action_set_roshan_digital_account_type
   - action_set_roshan_digital_account_action
+  - action_ask_personal_loan_action
+  - action_set_personal_loan_action
+  - action_show_loan_path
+  - action_ask_auto_loan_action
+  - action_set_auto_loan_action
+  - action_ask_home_finance_action
+  - action_set_home_finance_action
+  - action_ask_instant_loan_action
+  - action_set_instant_loan_action
+
 
 
 intents:
@@ -152,8 +197,14 @@ intents:
   - roshan_digital_account_type
   - roshan_digital_account_action
   - roshan_digital_account
-
-
+  - personal_loan
+  - personal_loan_action
+  - auto_loan
+  - auto_loan_action
+  - home_finance
+  - home_finance_action
+  - instant_loan
+  - instant_loan_action
 
 entities:
   - menu_path
@@ -166,6 +217,10 @@ entities:
   - credit_card_action
   - roshan_digital_account_type
   - roshan_digital_account_action
+  - personal_loan_action
+  - home_finance_action
+  - instant_loan_action
+  - auto_loan_action
 
 
 session_config:
